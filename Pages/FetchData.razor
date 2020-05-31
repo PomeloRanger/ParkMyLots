@@ -1,0 +1,46 @@
+﻿@page "/fetchdata"
+
+@using ParkMyLots.Data.Interfaces
+@using ParkMyLots.Data.Models.Traffic
+
+@inject ITrafficService trafficService
+
+<h1>Weather forecast</h1>
+
+<p>This component demonstrates fetching data from a service.</p>
+
+@if (Carparks == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Carpark ID</th>
+                <th>Available Lots</th>
+                <th>Lot Type</th>
+                <th>Development</th>
+            </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>@Carparks.CarParkId</td>
+            <td>@Carparks.AvailableLots</td>
+            <td>@Carparks.LotType</td>
+            <td>@Carparks.Development</td>
+        </tr>
+        </tbody>
+    </table>
+}
+
+@code {
+    private CarparkDetails Carparks;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var result = await trafficService.GetCarparkByID("A20");
+        Carparks = result;
+    }
+}
